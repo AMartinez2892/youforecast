@@ -4,6 +4,7 @@ const result = document.getElementById("result");
 
 searchBtn.addEventListener("click", function () {
   const city = cityInput.value;
+  result.textContent = "Loading...";
   fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`)
     .then((r) => r.json())
     .then((data) => {
@@ -17,7 +18,7 @@ searchBtn.addEventListener("click", function () {
       const cityName = data.results[0].name;
       const country = data.results[0].country;
 
-      fetch(
+      return fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
       )
         .then((r) => r.json())
@@ -25,5 +26,10 @@ searchBtn.addEventListener("click", function () {
           const temp = weather.current_weather.temperature;
           result.textContent = `${cityName}, ${country}: ${temp}°C`;
         });
+    })
+    .catch((error) => {
+      result.textContent =
+        "Couldn't get the weather. Check your connection and try again.";
+      console.log(error);
     });
 });
