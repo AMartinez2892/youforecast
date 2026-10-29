@@ -19,12 +19,12 @@ searchBtn.addEventListener("click", function () {
       const country = data.results[0].country;
 
       return fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`,
       )
         .then((r) => r.json())
         .then((weather) => {
           const temp = weather.current_weather.temperature;
-          result.textContent = `${cityName}, ${country}: ${temp}°C`;
+          result.textContent = `${cityName}, ${country}: ${temp}°F`;
         });
     })
     .catch((error) => {
