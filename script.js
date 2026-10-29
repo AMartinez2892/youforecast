@@ -10,7 +10,12 @@ searchBtn.addEventListener("click", function () {
     return;
   }
   result.textContent = "Loading...";
-  fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`)
+  let url = `https://geocoding-api.open-meteo.com/v1/search?name=${city}`;
+  if (!isNaN(city)) {
+    url = url + "&countryCode=US";
+  }
+
+  fetch(url)
     .then((r) => r.json())
     .then((data) => {
       if (!data.results || data.results.length === 0) {
@@ -38,9 +43,3 @@ searchBtn.addEventListener("click", function () {
       console.log(error);
     });
 });
-
-let url = `https://geocoding-api.open-meteo.com/v1/search?name=${city}`;
-if (!isNaN(city)) {
-  url = url + "&countryCode=US";
-}
-fetch(url);
