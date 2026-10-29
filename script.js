@@ -3,7 +3,12 @@ const searchBtn = document.getElementById("search-btn");
 const result = document.getElementById("result");
 
 searchBtn.addEventListener("click", function () {
-  const city = cityInput.value;
+  const city = cityInput.value.trim();
+
+  if (city === "") {
+    result.textContent = "Please enter a city or ZIP code.";
+    return;
+  }
   result.textContent = "Loading...";
   fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`)
     .then((r) => r.json())
@@ -33,3 +38,9 @@ searchBtn.addEventListener("click", function () {
       console.log(error);
     });
 });
+
+let url = `https://geocoding-api.open-meteo.com/v1/search?name=${city}`;
+if (!isNaN(city)) {
+  url = url + "&countryCode=US";
+}
+fetch(url);
